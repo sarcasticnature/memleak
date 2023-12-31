@@ -43,8 +43,7 @@ xt::xarray<uint8_t> read_mnist_images(const std::string& path)
         for (size_t i = 0; i < image_cnt; ++i) {
             image = new uint8_t[image_size];
             file.read(reinterpret_cast<char*>(image), image_size);
-            auto row = xt::row(output, i);
-            row = xt::adapt(image, image_size, xt::acquire_ownership(), shape);
+            xt::row(output, i) = xt::adapt(image, image_size, xt::acquire_ownership(), shape);
         }
     }
 
@@ -72,13 +71,6 @@ xt::xarray<uint8_t> read_mnist_labels(const std::string& path)
         uint8_t* labels = new uint8_t[image_cnt];
         file.read(reinterpret_cast<char*>(labels), image_cnt);
         xt::col(output, 0) = xt::adapt(labels, image_cnt, xt::acquire_ownership(), shape);
-
-        //for (size_t i = 0; i < image_cnt; ++i) {
-        //    image = new uint8_t[image_size];
-        //    file.read(reinterpret_cast<char*>(image), image_size);
-        //    auto row = xt::row(output, i);
-        //    row = xt::adapt(image, image_size, xt::acquire_ownership(), shape);
-        //}
     }
 
     return output;
