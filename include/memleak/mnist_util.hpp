@@ -79,13 +79,13 @@ xt::xarray<uint8_t> read_mnist_labels(const std::string& path)
 }
 
 template <typename T>
-xt::xarray<double> normalize_mnist(xt::xarray<T> raw)
+xt::xarray<double> normalize_mnist(const xt::xarray<T>& raw)
 {
     return xt::cast<double>(raw) / static_cast<double>(std::numeric_limits<T>::max());
 }
 
 template <typename T>
-xt::xarray<double> onehot_encode(xt::xarray<T> raw)
+xt::xarray<double> onehot_encode(const xt::xarray<T>& raw)
 {
     xt::xarray<double> hot(std::vector<size_t>{raw.shape()[0], 10});
 
