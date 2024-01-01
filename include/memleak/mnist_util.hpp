@@ -1,10 +1,12 @@
 #include <fstream>
 #include <cstdint>
 #include <vector>
+#include <limits>
 
 #include "xtensor/xarray.hpp"
 #include "xtensor/xview.hpp"
 #include "xtensor/xadapt.hpp"
+#include "xtensor/xaxis_iterator.hpp"
 
 namespace memleak
 {
@@ -74,6 +76,27 @@ xt::xarray<uint8_t> read_mnist_labels(const std::string& path)
     }
 
     return output;
+}
+
+template <typename T>
+xt::xarray<double> normalize_mnist(xt::xarray<T> raw)
+{
+    return xt::cast<double>(raw) / static_cast<double>(std::numeric_limits<T>::max());
+}
+
+template <typename T>
+xt::xarray<double> onehot_encode(xt::xarray<T> raw)
+{
+    xt::xarray<double> hot(std::vector<size_t>{raw.shape()[0], 10});
+
+    auto it_raw = raw.cbegin();
+    auto end_raw = raw.cend();
+    auto it_hot = xt::axis_begin(hot, 0);   // end _should_ not be needed as the shapes are the same
+
+    for (; it_raw != end_raw; ++it_raw, ++it_hot) {
+        (*it_hot)(*it_raw) = 1.0;
+    }
+    return hot;
 }
 
 } // namespace memleak
