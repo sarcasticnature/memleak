@@ -3,10 +3,7 @@
 #include <vector>
 #include <limits>
 
-#include "xtensor/xarray.hpp"
-#include "xtensor/xview.hpp"
-#include "xtensor/xadapt.hpp"
-#include "xtensor/xaxis_iterator.hpp"
+#include "xtensor.hpp"
 
 namespace memleak
 {
@@ -81,7 +78,10 @@ xt::xarray<uint8_t> read_mnist_labels(const std::string& path)
 template <typename T>
 xt::xarray<double> normalize_mnist(const xt::xarray<T>& raw)
 {
-    return xt::cast<double>(raw) / static_cast<double>(std::numeric_limits<T>::max());
+    xt::xarray<double> ret = xt::cast<double>(raw) /
+                             static_cast<double>(std::numeric_limits<T>::max());
+    xt::xarray<double> mean = xt::mean(ret);
+    return ret - mean;
 }
 
 template <typename T>

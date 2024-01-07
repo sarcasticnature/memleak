@@ -6,8 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# TODO: set up xtensor include dirs. Works out of the box on my machine :tm:, so it's low priority
-#find_package(xtensor REQUIRED)
+find_package(xtensor REQUIRED)
 
 include(FetchContent)
 
@@ -25,6 +24,6 @@ endif()
 include_directories(include)
 
 add_executable(memleak src/memleak.cpp)
-target_link_libraries(memleak PUBLIC matplot)
+target_link_libraries(memleak PUBLIC matplot xtensor xtensor::optimize xtensor::use_xsimd)
 
 file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

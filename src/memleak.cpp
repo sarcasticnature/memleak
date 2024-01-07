@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "xtensor/xarray.hpp"
+#include "xtensor.hpp"
 #include "xtensor/xio.hpp"
 
 #include "memleak/mnist_util.hpp"
